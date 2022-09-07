@@ -1,0 +1,69 @@
+#: import web webbrowser
+#: import hex_color kivy.utils.get_color_from_hex
+
+<HomeScreen>:
+
+    Label:
+        canvas.before:
+            Color:
+                rgba: hex_color('#10c8b1')
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                radius: [0, 0, 15, 15]
+
+        size_hint: 1, 0.15625
+        pos: 0, _content.top
+        markup: True
+        text: '[b]Cover, Copy and Compare[/b]'
+        font_size: self.width / 19
+        font_name: 'poppins'
+
+    BoxLayout:
+        id: _content
+        orientation: 'vertical'
+        size_hint: 1, 0.84375
+
+        Label:
+            size_hint: 1, 0.3
+            text: "Thank you for downloading the Cover, Copy and Compare app! Please select one of the following option below."
+            text_size: self.width, None
+            font_size: '17sp'
+            height: self.texture_size[1]
+            halign: 'center'
+            valign: 'top'
+            color: 0, 0, 0, 1
+            padding_x: self.width * 0.1
+            font_name: 'poppins'
+
+        GridLayout:
+
+            cols: 2
+            spacing: 10
+            size_hint: 1, 0.7
+            padding: 30
+            spacing: 30
+
+            ImageButton:
+                text: "Tutorial Activity"
+                icon: "./images/tutorial-activity.png"
+                on_release:
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = 'tutorial_screen'
+
+            ImageButton:
+                text: "Video Tutorial"
+                icon: "./images/video-tutorial.png"
+                on_release: web.open('https://www.youtube.com/watch?v=EgN4KQdHITA')
+
+            ImageButton:
+                text: "CCC Task"
+                icon: "./images/ccc-task.png"
+                on_release:
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = 'ccc_screen'
+
+            ImageButton:
+                text: "Study Information"
+                icon: "./images/study-information.png"
+                on_release: web.open('https://lunet-my.sharepoint.com/:b:/g/personal/majs6_lunet_lboro_ac_uk/EYQa-j5W_ONPjsU5aMbXvtsBltSMJZPnEZ2_fL2NE5hWyQ?e=A5AQHx')

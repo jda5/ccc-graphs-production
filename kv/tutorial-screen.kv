@@ -1,0 +1,126 @@
+<TutorialNavigationPane>:
+
+    IconButton:
+        pos_hint: {'center_y': 0.7, 'x': 0.025}
+        size_hint_y: 0.33
+        width: self.height
+        icon: './assets/back.png'
+        on_release:
+            root.parent.parent.manager.transition.direction = 'right'
+            root.parent.parent.manager.current = 'home_screen'
+
+    Label:
+        pos_hint: {'center_y': 0.69, 'x': 0.1}
+        size_hint: 0.65, 0.45
+        text: "To start press the [b]'Peek'[/b] button. Pressing this button toggles between the model solution, and your answers. Press the [b]'Compare'[/b] button when you're ready to submit your answers."
+        markup: True
+        color: [0, 0, 0, 1]
+        font_name: 'poppins'
+        text_size: self.size
+        halign: 'center'
+        valign: 'middle'
+
+    RoundedButton:
+        id: peek
+        pos_hint: {'right': 748/768, 'top': 231/250}
+        text: 'Peek'
+        on_release: root.peek()
+
+    RoundedButton:
+        id: compare
+        pos_hint: {'right': 748/768, 'top': 169/250}
+        text: 'Compare'
+        on_release: root.compare()
+
+    RoundedButton:
+        id: reset
+        pos_hint: {'right': 748/768, 'top': 203/250}
+        text: 'Reset'
+        on_release: root.reset()
+        disabled: True
+        size_hint_y: 0
+        opacity: 0
+
+    RoundedButton:
+        id: confirm
+        pos_hint: {'right': 748/768, 'top': 203/250}
+        text: 'Confirm'
+        on_release: root.compare()
+        disabled: True
+        size_hint_y: 0
+        opacity: 0
+
+    Label:
+        size_hint: 728/768, 101/250
+        pos_hint: {'center_x': 0.5, 'y': 0}
+
+        canvas.before:
+            Color:
+                rgba: hex_color('#10c8b1')
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                radius: [10, 10, 10, 10]
+
+        text: "Try entering some simple expressions in the spaces provided below."
+        bold: True
+        markup: True
+        font_name: 'poppins'
+        font_size: self.width * 0.022
+
+
+<TutorialScreen>:
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        TutorialNavigationPane:
+            size_hint: 1, 250/1024
+            id: _navigation
+
+        BoxLayout:
+            id: response_fields
+            size_hint: 1, 774/1024
+            orientation: 'vertical'
+            spacing: (10/774) * self.height
+            padding: (10/768) * self.width
+
+            ResponseField:
+                tutorial_widget: True
+                id_number: 0
+                navigation: _navigation
+                text: 'Write y = mx + c'
+                background_color: hex_color('#29d88e')
+                normal_color: hex_color('#29d88e')
+
+            ResponseField:
+                tutorial_widget: True
+                id_number: 1
+                navigation: _navigation
+                text: 'Write ½'
+                background_color: hex_color('#28d792')
+                normal_color: hex_color('#28d792')
+
+            ResponseField:
+                tutorial_widget: True
+                id_number: 2
+                navigation: _navigation
+                text: 'Type y = -3x + c'
+                background_color: hex_color('#1ed1a0')
+                normal_color: hex_color('#1ed1a0')
+
+            ResponseField:
+                tutorial_widget: True
+                id_number: 3
+                navigation: _navigation
+                text: 'Type 5 × 8 = 40\n\nHint: type * for ×'
+                background_color: hex_color('#14cbad')
+                normal_color: hex_color('#14cbad')
+
+            ResponseField:
+                tutorial_widget: True
+                id_number: 4
+                navigation: _navigation
+                text: 'Type ¾\n\nHint: type / for fraction'
+                background_color: hex_color('#0bc5b5')
+                normal_color: hex_color('#0bc5b5')

@@ -1,0 +1,385 @@
+#: import hex_color kivy.utils.get_color_from_hex
+#: import window kivy.core.window.Window
+
+
+<ConnectionPopup>:
+    size_hint: .8, .4
+    auto_dismiss: False
+    title: 'Connection Error'
+    title_size: popup_body.font_size
+    separator_color: hex_color('#10c8b1')
+
+    FloatLayout:
+
+        Label:
+            id: popup_body
+            text: "Please check your internet connection and try again."
+            pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+            size_hint: 1, 0.6
+            font_name: 'poppins'
+            font_size: self.width * 0.03
+
+        RoundedButton:
+            pos_hint: {'center_x': 0.5, 'y': 0.05}
+            size_hint: 0.35, 0.2
+            text: 'Retry'
+            on_release: root.connection()
+
+
+<IDInput>:
+    next_input: None
+    halign: 'center'
+    multiline: False
+    allow_copy: False
+    font_size: self.height * 4/5
+    cursor_color: 0.01, 0.33, 0.64, 1
+
+
+<IDPopup>:
+    size_hint: .8, .4
+    auto_dismiss: False
+    title: 'ID Number'
+    separator_color: hex_color('#10c8b1')
+
+    FloatLayout:
+
+        Label:
+            id: popup_body
+            text: "Please enter your ID number."
+            pos_hint: {'center_x': 0.5, 'center_y': 0.85}
+            size_hint: 1, 0.15
+            font_name: 'poppins'
+            font_size: self.width * 0.03
+
+        BoxLayout:
+            id: id_boxlayout
+            orientation: 'horizontal'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.55}
+            size_hint: 0.6, 0.25
+            spacing: self.width * 0.1
+
+            IDInput:
+                id: input_0
+                next_input: input_1
+                focus: True
+            IDInput
+                id: input_1
+                next_input: input_2
+            IDInput:
+                id: input_2
+                next_input: input_3
+            IDInput
+                id: input_3
+
+        RoundedButton:
+            id: submit_button
+            pos_hint: {'center_x': 0.5, 'y': 0.075}
+            size_hint: 0.35, 0.2
+            text: 'Submit'
+            on_release: root.submit()
+
+
+<Fraction>:
+    numerator: _numerator
+    denominator: _denominator
+    spacing: self.numerator.height / 4
+    height: self.numerator.height + self.denominator.height + self.spacing
+    width: max(self.numerator.width, self.denominator.width)
+
+    canvas:
+        Color:
+            rgba: 0, 0, 0, 1
+        Line:
+            points: [self.x, self.y + self.height*0.5, self.x + self.width, self.y + self.height*0.5]
+            width: 1
+
+    TextWidget:
+        id: _numerator
+        pos: root.x, root.y + self.height + root.spacing
+
+    TextWidget:
+        id: _denominator
+        pos: root.x, root.y
+
+
+<ImageButton@ButtonBehavior+BoxLayout>:
+    orientation: 'vertical'
+    spacing: self.height * 0.125
+    padding: self.height * 0.165
+    text: ''
+    icon: ''
+
+    canvas:
+        Color:
+            rgba: [1, 1, 1, 1]
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: './assets/image-button-normal.png' if self.state == 'normal' else './assets/image-button-down.png'
+
+    Label:
+        size_hint_x: 1
+        size_hint_y: 0.05 if self.text != '' else 0
+        text: root.text
+        bold: True
+        color: 0, 0, 0, 1
+        font_name: 'poppins'
+
+    Image:
+        source: root.icon
+        allow_stretch: True
+        keep_ratio: True
+
+
+<RoundedButton>:
+    color: 1, 1, 1, 1
+    x_hint: 154/768
+    y_hint: 50/250
+    size_hint: self.x_hint, self.y_hint
+    font_name: 'poppins'
+    bold: True
+    short: True
+    canvas.before:
+        Color:
+            rgba: self.color if self.state == 'normal' else [0.8, 0.8, 0.8, 1]
+        Rectangle:
+            size: self.size
+            pos: self.pos
+            source: './assets/rounded-button.png' if self.short else './assets/elongated-rounded-button.png'
+
+<IconButton@ButtonBehavior+Widget>:
+    icon: ''
+    size_hint: None, 0.55
+    width: self.height
+    canvas:
+        Color:
+            rgba: [1, 1, 1, 1] if self.state == 'normal' else [0.8, 0.8, 0.8, 1]
+        Rectangle:
+            size: self.size
+            pos: self.pos
+            source: self.icon
+
+<TextWidget>:
+    size_hint: None, None
+
+    canvas.before:
+        Color:
+            rgba: self.highlight_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+
+<TrapeziumLabel@FloatLayout>:
+    background_color: []
+    text: ''
+    canvas.before:
+        Color:
+            rgba: self.background_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+            source: './assets/white-rounded-trapezium.png'
+
+    Label:
+        size_hint: 0.78, 1
+        pos_hint: {'x': 21/294, 'y': 0}
+        text: root.text
+        font_name: 'poppins'
+        bold: True
+        color: 0, 0, 0, 1
+        text_size: self.size
+        font_size: self.height*0.1
+        valign: 'middle'
+
+<Cursor>:
+    canvas.after:
+        Color:
+            rgba: self.color
+        Line:
+            points: [self.x, self.y, self.x, self.y + self.height]
+            width: 1
+            cap: 'none'
+
+<KeyboardWriter>:
+    cursor: cursor
+
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [9]
+
+    Cursor:
+        id: cursor
+        size_hint: None, None
+        size: [window.height/26,] *2
+        pos: root.starting_x, root.y + (root.height - self.height)/2
+
+<InfoRow@FloatLayout>:
+    center_text: 'N/A'
+    left_image_src: ''
+    right_image_src: ''
+    prev: ''
+    total: ''
+
+    Label:
+        id: box
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                source: root.left_image_src
+                size: self.size
+                pos: self.pos
+
+        size_hint: None, None
+        size: [min(root.width, root.height),] * 2
+        pos: root.pos
+        color: 1, 1, 1, 1
+        font_name: 'poppins'
+        bold: True
+        text: root.prev
+        font_size: self.width * 0.4
+
+    Label:
+        size_hint: None, 1
+        width: root.width - (box.width * 2)
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        color: 0, 0, 0, 1
+        font_name: 'poppins'
+        bold: False
+        text: root.center_text
+        font_size: self.width * 0.05
+
+    Label:
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                source: root.right_image_src
+                size: self.size
+                pos: self.pos
+
+        size_hint: None, None
+        size: [min(root.width, root.height),] * 2
+        pos_hint: {'right': 1, 'y': 0}
+        color: 1, 1, 1, 1
+        font_name: 'poppins'
+        bold: True
+        text: root.total
+        font_size: self.width * 0.4
+
+<ScoreButton@ButtonBehavior+BoxLayout>:
+    orientation: 'horizontal'
+    padding: [self.width * 0.15, self.height * 0.1, self.width * 0.1, self.height * 0.15]
+    text: ''
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.x, self.y - 1
+            size: self.size
+            source: './assets/score-rectangle.png' if self.state == 'normal' else './assets/score-rectangle-down.png'
+    Label:
+        size_hint: 0.72, 1
+        text: root.text
+        color: 0, 0, 0, 1
+        font_name: 'poppins'
+        bold: True
+        text_size: self.size
+        halign: "left"
+        valign: "middle"
+
+    Image:
+        size_hint: 0.28, 1
+        source: './assets/data-icon.png'
+        size: self.texture_size
+
+
+<CompletionBar@FloatLayout>:
+    orientation: 'vertical'
+    completion: 0
+
+    canvas:
+        Color:
+            rgba: 0.8471, 0.8471, 0.8471, 1
+        RoundedRectangle:
+            pos: self.x, self.y + (self.height * 0.7) 
+            size: self.width, (self.height * 0.2)
+            radius: [(15, 15) for _ in range(4)]
+        Color:
+            rgba: 0, 238/255, 229/255, 1
+        RoundedRectangle:
+            pos: self.x, self.y + (self.height * 0.7)
+            size: self.width * root.completion, (self.height * 0.2)
+            radius: [(15, 15) for _ in range(4)]
+    
+    Label:
+        text: str(int(root.completion * 100)) + "%"
+        pos_hint: {'center_x': 0.5, 'y': 0.3}
+        color: 0, 0, 0, 1
+        size_hint: None, 0.1
+        font_name: 'poppins'
+
+
+<InfoCircle@FloatLayout>:
+    size_hint: 201/768, 248/1024
+    text: "0"
+    heading: ""
+    unit: ""
+
+    Widget:
+        id: inner
+        canvas.before:
+            Color:
+                rgba: hex_color('#c1f0ed')
+            Ellipse:
+                angle_start: 0
+                angle_end: 290
+                size: self.size
+                pos: self.pos
+        size_hint: None, 201/248
+        width: self.height
+        pos_hint: {'center_x': 0.5, 'y': 0}
+
+    Widget:
+        canvas.before:
+            Color:
+                rgba: hex_color('#0ec7b5')
+            Ellipse:
+                size: self.size
+                pos: self.pos
+        pos_hint: {'center_x': 0.5}
+        y: root.y + (inner.height - self.height)/2
+        size_hint: None, 160/248
+        width: self.height
+
+    Label:
+        text: root.heading
+        size_hint: 1, 15/248
+        pos_hint: {'top': 1, 'center_x': 0.5}
+        font_size: self.height
+        bold: True
+        color: 0, 0, 0, 1
+        font_name: 'poppins'
+
+    Label:
+        text: root.text
+        size_hint: 1, 61/248
+        pos_hint: {'y': 88/248, 'center_x': 0.5}
+        font_size: self.height
+        bold: True
+        color: 1, 1, 1, 1
+        font_name: 'poppins'
+
+    Label:
+        text: root.unit
+        size_hint: 1, 14/248
+        pos_hint: {'y': 54/248, 'center_x': 0.5}
+        font_size: self.height
+        bold: True
+        color: 1, 1, 1, 1
+        font_name: 'poppins'

@@ -1,0 +1,95 @@
+<InfoScreen>:
+
+    FloatLayout:
+
+        IconButton:
+            pos_hint: {'x': 40/768, 'center_y': 0.925}
+            size_hint_y: 0.1
+            width: self.height
+            icon: './assets/back.png'
+            on_release:
+                root.manager.transition.direction = 'right'
+                root.manager.current = 'ccc_screen'
+
+        CompletionBar:
+            id: completion
+            pos_hint: {'center_y': 0.91, 'center_x': 0.5}
+            size_hint: 0.5, 0.07
+
+        Widget:
+            id: star_image
+            canvas:
+                Color:
+                    rgba: 1, 1, 1, 1
+                Rectangle:
+                    source: './assets/info-rectangle.png'
+                    size: self.size
+                    pos: self.pos
+
+            pos_hint: {'center_x': 0.5, 'y': 536/1024}
+            size_hint: 658/768, None
+            height: (268/688) * self.width
+
+        Label:
+            id: score
+            text: '0'
+            pos_hint: {'center_x': 0.5}
+            y: star_image.center_y - (self.height/2)
+            size_hint: 1, 140/1024
+            font_size: self.height
+            bold: True
+            color: 0, 0, 0, 1
+            font_name: 'poppins'
+
+        Label:
+            text: 'Score'
+            pos_hint: {'center_x': 0.5}
+            y: score.y - (self.height*2)
+            size_hint: 1, 16/1024
+            font_size: self.height
+            bold: True
+            color: 0, 0, 0, 1
+            font_name: 'poppins'
+
+        Label:
+            text: 'Previous Question'
+            pos: info_box.x - (self.width/4), info_box.top + (star_image.y - info_box.top - self.height)/2
+            size_hint: 185/768, 20/1024
+            font_size: self.height
+            bold: True
+            color: 0, 0, 0, 1
+            font_name: 'poppins'
+
+        Label:
+            text: 'All Question'
+            pos: info_box.right - ((3*self.width)/4), info_box.top + (star_image.y - info_box.top - self.height)/2 
+            size_hint: 185/768, 20/1024
+            font_size: self.height
+            bold: True
+            color: 0, 0, 0, 1
+            font_name: 'poppins'
+
+        BoxLayout:
+            id: info_box
+            orientation: 'vertical'
+            size_hint: 585/768, 0.40
+            spacing: self.height * 0.05
+            pos_hint: {'center_x': 0.5, 'y': 0.04}
+
+            InfoRow:
+                id: peek
+                center_text: "Peeks"
+                left_image_src: './assets/peeks-a.png'
+                right_image_src: './assets/peeks-b.png'
+
+            InfoRow:
+                id: correct
+                center_text: "Correct"
+                left_image_src: './assets/correct-a.png'
+                right_image_src: './assets/correct-b.png'
+
+            InfoRow:
+                id: time
+                center_text: "Average Time per Question"
+                left_image_src: './assets/time-a.png'
+                right_image_src: './assets/time-b.png'

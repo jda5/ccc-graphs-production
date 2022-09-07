@@ -1,0 +1,206 @@
+#: import hex_color kivy.utils.get_color_from_hex
+
+<NavigationPane>:
+
+    question_text: 'Default'
+
+    ScoreButton:
+        size_hint: 185/768, 61/149
+        pos_hint: {'x': 8/768, 'top': 219/250}
+        text: "Score: " + str(root.score)
+        on_release:
+            root.parent.parent.manager.transition.direction = 'left'
+            root.parent.parent.manager.current = 'info_screen'
+
+    CompletionBar:
+        id: completion_bar
+        pos_hint: {'top': 190/250, 'center_x': 0.5}
+        size_hint: 0.45, 0.27
+
+    RoundedButton:
+        id: ready
+        pos_hint: {'right': 748/768, 'top': 203/250}
+        text: 'Ready'
+        on_release: root.ready()
+
+    RoundedButton:
+        id: peek
+        pos_hint: {'right': 748/768, 'top': 231/250}
+        text: 'Peek'
+        on_release: root.peek()
+        disabled: True
+        size_hint_y: 0
+        opacity: 0
+
+    RoundedButton:
+        id: compare
+        pos_hint: {'right': 748/768, 'top': 169/250}
+        text: 'Compare'
+        on_release: root.compare()
+        disabled: True
+        size_hint_y: 0
+        opacity: 0
+
+    RoundedButton:
+        id: next
+        pos_hint: {'right': 748/768, 'top': 203/250}
+        text: 'Next'
+        on_release: root.next()
+        disabled: True
+        size_hint_y: 0
+        opacity: 0
+
+    RoundedButton:
+        id: confirm
+        pos_hint: {'right': 748/768, 'top': 203/250}
+        text: 'Confirm'
+        on_release: root.compare()
+        disabled: True
+        size_hint_y: 0
+        opacity: 0
+
+    Label:
+        size_hint: 728/768, 101/250
+        pos_hint: {'center_x': 0.5, 'y': 0}
+
+        canvas.before:
+            Color:
+                rgba: hex_color('#10c8b1')
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                radius: [10, 10, 10, 10]
+
+        text: root.question_text
+        bold: True
+        markup: True
+        font_name: 'poppins'
+        font_size: self.width * 0.022
+
+<ResponseField>:
+
+    canvas.after:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            size: self.width + ((22/1476) * self.width), self.height + ((33/308) * self.height)
+            pos: self.x - ((11/1476) * self.width), self.y - ((16.5/308) * self.height)
+            source: './assets/response-box-shadow-edit.png'
+
+    ExpressionWriter:
+        id: expression_writer
+
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+
+        size_hint: 0.757, 1
+        pos: trapezium_label.right - (trapezium_label.width * 0.19), root.y
+
+    Widget:
+        id: eraser_circle
+        eraser_size: root.height * 0.1
+        visible: False
+        canvas.before:
+            Color:
+                rgba: [0.5, 0.5, 0.5, 1] if self.visible else [1, 1, 1, 0]
+            Line:
+                circle: self.center_x, self.center_y, self.width
+        size_hint: None, None        
+        size: self.eraser_size, self.eraser_size
+        pos: expression_writer.x + (expression_writer.width / 4), expression_writer.y + (expression_writer.height / 2)
+
+    IconButton:
+        id: eraser_button
+        x: expression_writer.x + (expression_writer.width - self.width)
+        y: expression_writer.y + (expression_writer.height * 0.51 - self.height)
+        icon: './images/eraser.png' if expression_writer.drawing else './images/pen_drawing.png'
+        on_release: expression_writer.switch_draw_mode()
+
+    KeyboardWriter:
+        id: keyboard_writer
+        size_hint: None, None
+        size: 0, root.height
+        pos: expression_writer.x, root.y
+        starting_x: self.x + trapezium_label.width * 0.329
+        opacity: 0
+
+    IconButton:
+        id: keyboard_button
+        x: expression_writer.x + (expression_writer.width - self.width)
+        y: expression_writer.y + (expression_writer.height - self.height)
+        icon: './images/keyboard.png' if root.writing else './images/pen.png'
+        on_release: root.switch_mode()
+
+    PeekWidget:
+        id: peek_widget
+        canvas.before:
+            Color:
+                rgba: [0.92, 0.92, 0.92, 1]
+            RoundedRectangle:
+                size: expression_writer.width, root.height
+                pos: expression_writer.x, root.y
+                radius: [9]
+        size_hint: 0.75, 1
+        pos: trapezium_label.right, root.y
+
+    TrapeziumLabel:
+        id: trapezium_label
+        size_hint: 0.3, 1
+        pos: root.x, root.y
+        text: root.text
+        background_color: root.background_color
+
+<CCCScreen>:
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        NavigationPane:
+            id: _navigation
+            size_hint: 1, 250/1024
+
+        BoxLayout:
+            id: response_fields
+            size_hint: 1, 774/1024
+            orientation: 'vertical'
+            spacing: (10/774) * self.height
+            padding: (10/768) * self.width
+
+            ResponseField:
+                navigation: _navigation
+                text: 'Calculate the slope of the line.'
+                guidance_text: 'Calculate the slope of the line.'
+                background_color: hex_color('#29d88e')
+                normal_color: hex_color('#29d88e')
+
+            ResponseField:
+                navigation: _navigation
+                text: 'Substitute the slope into the general equation of a line.'
+                guidance_text: 'Substitute the slope into the general equation of a line.'
+                background_color: hex_color('#28d792')
+                normal_color: hex_color('#28d792')
+
+            ResponseField:
+                navigation: _navigation
+                text: 'Substitute either point into the general equation.'
+                guidance_text: 'Substitute either point into the general equation.'
+                background_color: hex_color('#1ed1a0')
+                normal_color: hex_color('#1ed1a0')
+
+            ResponseField:
+                navigation: _navigation
+                text: 'Solve for c.'
+                guidance_text: 'Solve for c.'
+                background_color: hex_color('#14cbad')
+                normal_color: hex_color('#14cbad')
+
+            ResponseField:
+                navigation: _navigation
+                text: 'Write the equation of the line.'
+                guidance_text: 'Write the equation of the line.'
+                background_color: hex_color('#0bc5b5')
+                normal_color: hex_color('#0bc5b5')

@@ -1,0 +1,80 @@
+#: import web webbrowser
+
+<CompletionScreen>:
+
+    FloatLayout:
+        Label:
+            text: "Well done for finishing the task!"
+            pos_hint: {'center_x': 0.5}
+            y: (root.top + star_image.top)/2 - self.height/2
+            size_hint: 1, 31/1024
+            font_size: self.height
+            bold: True
+            color: 0, 0, 0, 1
+            font_name: 'poppins'
+
+        Widget:
+            id: star_image
+            canvas:
+                Color:
+                    rgba: 1, 1, 1, 1
+                Rectangle:
+                    source: './assets/info-rectangle.png'
+                    size: self.size
+                    pos: self.pos
+
+            pos_hint: {'center_x': 0.5, 'y': 521/1024}
+            size_hint: 658/768, None
+            height: (268/688) * self.width
+
+        Label:
+            id: score
+            text: '0'
+            pos_hint: {'center_x': 0.5}
+            y: star_image.center_y - (self.height/2)
+            size_hint: 1, 140/1024
+            font_size: self.height
+            bold: True
+            color: 0, 0, 0, 1
+            font_name: 'poppins'
+
+        Label:
+            text: 'Score'
+            pos_hint: {'center_x': 0.5}
+            y: score.y - (self.height*2)
+            size_hint: 1, 16/1024
+            font_size: self.height
+            bold: True
+            color: 0, 0, 0, 1
+            font_name: 'poppins'
+
+        InfoCircle:
+            id: peek
+            heading: "You peeked..."
+            unit: "times"
+            pos_hint: {'center_x': 0.2}
+            y: (star_image.y + back_button.top)/2 - self.height/2
+
+        InfoCircle:
+            id: correct
+            heading: "You submitted..."
+            unit: "correct steps"
+            pos_hint: {'center_x': 0.5}
+            y: (star_image.y + back_button.top)/2 - self.height/2
+
+        InfoCircle:
+            id: time
+            heading: "Average time per question..."
+            unit: "seconds"
+            pos_hint: {'center_x': 0.8}
+            y: (star_image.y + back_button.top)/2 - self.height/2
+
+        RoundedButton:
+            id: back_button
+            short: False
+            pos_hint: {'center_x': 0.5,'y': 77/1024}
+            size_hint: 582/768, 51/1024
+            text: "Return to Main Menu"
+            on_release: 
+                root.manager.transition.direction = 'right'
+                root.manager.current = 'home_screen'
